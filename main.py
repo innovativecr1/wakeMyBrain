@@ -2,17 +2,30 @@ import tkinter as tk
 from time import strftime
 from tkinter import ttk
 import datetime
+import webbrowser
 
 def update_time():
+    global alarm_status
     current_time = strftime("%H:%M:%S")
     time_label.config(text=current_time)
     # stroke.config(text=current_time)
     if current_time == alarm_entry.get():
+        alarm_status = True
+    if alarm_status == True:
         ring_bell()
     root.after(1000, update_time)
 
 def ring_bell():
     print("It's time")
+
+def stop_alarm():
+    global alarm_status
+    if alarm_status:
+        alarm_status = False
+        print("time to solve some questions")
+        webbrowser.open('https://innovativecreations.github.io/chemistryQueModel/periodic/index.html')
+
+
 
 def set_alarm():
     # date_format = '%Y-%m-%d %H:%M:%S'
@@ -25,6 +38,8 @@ def set_alarm():
         print("Check data")    
 
     print(alarm_time)
+
+alarm_status = False
 
 root = tk.Tk()
 root.title("Real-Time Clock")
@@ -55,16 +70,18 @@ time_label.place(relx=0.5, rely=0.5, anchor="center")
 tab2 = tk.Frame(notebook, bg="#3b3b3b")
 notebook.add(tab2, text="Alarm")
 
-label_tab2 = tk.Label(tab2, text="Set an Alarm:", font=("Helvetica", 20), fg="#f0f0f0", bg="#3b3b3b")
+label_tab2 = tk.Label(tab2, text="Set an Alarm: (Format: HH:MM:SS)", font=("Helvetica", 20), fg="#f0f0f0", bg="#3b3b3b")
 label_tab2.place(relx=0.5, rely=0.3, anchor="center")
 
 alarm_time = tk.StringVar()
 alarm_entry = tk.Entry(tab2, textvariable=alarm_time, font=("Helvetica", 14), width=10)
 alarm_entry.place(relx=0.5, rely=0.4, anchor="center")
 
-set_alarm_button = tk.Button(tab2, text="Set Alarm (Format: HH:MM:SS)", font=("Helvetica", 14), command=set_alarm)
+set_alarm_button = tk.Button(tab2, text="Set Alarm", font=("Helvetica", 14), command=set_alarm)
 set_alarm_button.place(relx=0.5, rely=0.5, anchor="center")
 
+stop_alarm_button = tk.Button(tab2, text="Stop Alarm", font=("Helvetica", 14), command=stop_alarm)
+stop_alarm_button.place(relx=0.5, rely=0.6, anchor="center")
 
 # time_label.pack()
 update_time()
